@@ -26,6 +26,12 @@ public class CustomerDao {
                 .map(integer -> new CustomerDto(integer, "Customer " + integer));
     }
 
+    public Flux<CustomerDto> getAllCustomersStreamWithoutSleep() {
+        return Flux.range(1, 50)
+                .doOnNext(integer -> System.out.println("processing in stream: " + integer))
+                .map(integer -> new CustomerDto(integer, "Customer " + integer));
+    }
+
     private void sleep(int integer) {
         try {
             Thread.sleep(1000);
