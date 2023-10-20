@@ -2,6 +2,7 @@ package com.reactive.example.reactiveprogramming.handler;
 
 import com.reactive.example.reactiveprogramming.dao.CustomerDao;
 import com.reactive.example.reactiveprogramming.dto.CustomerDto;
+import com.reactive.example.reactiveprogramming.exception.CustomerException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.server.ServerRequest;
@@ -28,7 +29,9 @@ public class CustomerHandler {
         int id = Integer.parseInt(request.pathVariable("id"));
         Mono<CustomerDto> customerDtoMono = customerDao.getAllCustomersStreamWithoutSleep()
                 .filter(customer -> customer.getId() == id)
-                .next();
+                .next()
+                .switchIfEmpty(Mono.error(
+                        new CustomerException("Customer not found with id: " + id)));
         return ServerResponse.ok().body(customerDtoMono, CustomerDto.class);
     }
 

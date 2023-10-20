@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springdoc.core.annotations.RouterOperation;
 import org.springdoc.core.annotations.RouterOperations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.web.WebProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
@@ -31,6 +32,11 @@ public class RouterConfig {
     public RouterConfig(CustomerHandler customerHandler, CustomerStreamHandler customerStreamHandler) {
         this.customerHandler = customerHandler;
         this.customerStreamHandler = customerStreamHandler;
+    }
+
+    @Bean
+    public WebProperties.Resources resources() {
+        return new WebProperties.Resources();
     }
 
     @Bean
